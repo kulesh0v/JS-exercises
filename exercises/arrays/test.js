@@ -1,6 +1,5 @@
-const chai = require('chai');
 const flat = require('./flat.js');
-const assert = chai.assert;
+const assert = require('chai').assert;
 
 describe('Array', function () {
   it('[[1, 2], 3, [4, [5, [6]]]] = [1, 2, 3, 4, 5, 6]', function () {
