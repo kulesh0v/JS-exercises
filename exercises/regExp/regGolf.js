@@ -1,7 +1,5 @@
 function regGolf() {
-  let res = verify(/ca[rt]/,
-    ["my car", "bad cats"],
-    ["camper", "high art"]);
+  let res = verify(/ca[rt]/, ["my car", "bad cats"], ["camper", "high art"]);
 
   res += verify(/pr?op/,
     ["pop culture", "mad props"],
@@ -23,23 +21,30 @@ function regGolf() {
     ["hottentottententen"],
     ["no", "hotten totten tenten"]);
 
-  res += verify(/\b[^e ]+\b/,
+  res += verify(
+    /\b[^e ]+\b/,
     ["red platypus", "wobbling nest"],
-    ["earth bed", "learning ape"]);
+    ["earth bed", "learning ape"]
+  );
   return res;
 }
 
 function verify(regexp, yes, no) {
+  let errorsAmount = 0;
   if (regexp.source === "...") return;
-  yes.forEach(function(s) {
-    if (!regexp.test(s))
+  yes.forEach(function (s) {
+    if (!regexp.test(s)) {
+      errorsAmount++;
       console.log("Не нашлось '" + s + "'");
+    }
   });
-  no.forEach(function(s) {
-    if (regexp.test(s))
-      console.log("Неожиданное вхождение " + regexp.source + "'" + s + "'");
+  no.forEach(function (s) {
+    if (regexp.test(s)) {
+      errorsAmount++;
+      console.log("Неожиданное вхождение " + "'" + s + "'");
+    }
   });
-  return yes.length + no.length;
+  return errorsAmount;
 }
 
 module.exports = regGolf;

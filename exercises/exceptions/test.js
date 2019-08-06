@@ -3,28 +3,14 @@ const assert = require('chai').assert;
 const boxWork = require('./box.js');
 
 describe('Exceptions: ', function () {
-  it('reliableMultiply(8, 8)', function () {
-    const flatRes = reliableMultiply(8, 8);
-    const realRes = 64;
-    assert.equal(flatRes, realRes);
-  });
-
-  it('reliableMultiply(3, 3)', function () {
-    const flatRes = reliableMultiply(3, 3);
-    const realRes = 9;
-    assert.equal(flatRes, realRes);
-  });
-
-  it('reliableMultiply(2, 2)', function () {
-    const flatRes = reliableMultiply(2, 2);
-    const realRes = 4;
-    assert.equal(flatRes, realRes);
-  });
-
-  it('reliableMultiply(25, 25)', function () {
-    const flatRes = reliableMultiply(25, 25);
-    const realRes = 625;
-    assert.equal(flatRes, realRes);
+  it('should multiply correctly and not throw', function () {
+    const tests = [];
+    for (let i = 0; i < 10; i++) {
+      for (let j = 0; j < 10; j++) {
+        tests.push({ a: i, b: j, expectedResult: i * j })
+      }
+    }
+    tests.forEach(test => assert.equal(reliableMultiply(test.a, test.b), test.expectedResult));
   });
 
   it('locked box', function () {

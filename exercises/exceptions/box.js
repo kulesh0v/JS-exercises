@@ -14,13 +14,16 @@ const box = {
 };
 
 function withBoxUnlocked(body) {
+  let wasLocked = box.locked;
   box.unlock();
   try {
     body();
   } catch (e) {
     console.log(e.message);
   }
-  box.lock();
+  if(wasLocked){
+    box.lock();
+  }
 }
 
 withBoxUnlocked(function () {

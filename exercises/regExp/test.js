@@ -5,7 +5,7 @@ const isNumber = require('./numbers.js');
 describe('RegExp', function () {
     describe('RegGolf', function () {
       it('', function () {
-        assert(regGolf(), 0);
+        assert.equal(regGolf(), 0);
       });
     });
     describe('Reg Quotes', function () {
