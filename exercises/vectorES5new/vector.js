@@ -1,6 +1,10 @@
 function Vector(x1, y1, x2, y2) {
   this.x = x2 - x1;
   this.y = y2 - y1;
+
+  this.isEqual = function (b) {
+    return this.x === b.x && this.y === b.y;
+  };
 }
 
 Object.defineProperty(Vector.prototype, 'length', {
@@ -16,4 +20,10 @@ Vector.prototype.plus = function () {
   }
   return result;
 };
-module.exports = Vector;
+Vector.prototype.toString = function () {
+  return 'vector (' + this.x + ', ' + this.y + ')';
+};
+
+if (module) {
+  module.exports = Vector;
+}
