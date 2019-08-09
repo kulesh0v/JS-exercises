@@ -9,6 +9,7 @@ function* flat(arr) {
 }
 
 const A = [1, [2, [3, 4], 5], 6];
+console.log(flat(A));
 for (let f of flat(A)) {
   console.log(f);
 }

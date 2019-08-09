@@ -1,6 +1,9 @@
 function askFoo() {
   return new Promise(function (resolve, reject) {
-    resolve('foo');
+    setTimeout(
+      function () {
+        resolve('foo');
+      }, 300);
   });
 }
 
