@@ -3,4 +3,7 @@
 /client/build
 /exercises/node_modules
 /exercises/.idea
+/exercises/fileSystem/node_modules
+/exercises/fileSystem/.idea
+/exercises/fileSystem/test_main_folder
 /.idea

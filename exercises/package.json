@@ -11,6 +11,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "asunc": "^1.0.1",
+    "async": "^3.1.0",
     "axios": "^0.19.0",
     "chai": "^4.2.0",
     "es6-promise": "^4.2.8",
