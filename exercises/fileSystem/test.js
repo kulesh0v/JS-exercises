@@ -42,16 +42,17 @@ describe('fileSystem', function () {
       return request
         .post('http://localhost:3000/Photo/Minsk2019/2.jpeg?type=f')
         .catch(err => assert.equal(err.message, 'Request failed with status code 400'));
-    });it('should create third file', function () {
+    });
+    it('should create third file', function () {
       return request
-        .post('http://localhost:3000/Documents/Lab1.doc?')
-        .then(res => assert.equal(res.data, 'File Documents/Lab1.doc created'));
+        .post('http://localhost:3000/Documents/Lab1.txt?')
+        .then(res => assert.equal(res.data, 'File Documents/Lab1.txt created'));
     });
   });
   describe('should open directories', function () {
     it('should open directory', function () {
       return request
-        .get('http://localhost:3000/Photo?type=d')
+        .get('http://localhost:3000/Photo')
         .then(res => assert.equal(res.data.toString(), 'Minsk2019'));
     });
     it('should open main directory ', function () {
@@ -61,12 +62,7 @@ describe('fileSystem', function () {
     });
     it('should try to open directory with wrong path ', function () {
       return request
-        .get('http://localhost:3000//Phooto?type=d')
-        .catch(err => assert.equal(err.message, 'Request failed with status code 404'));
-    });
-    it('should try to open directory with wrong flag ', function () {
-      return request
-        .get('http://localhost:3000//Photo?type=f')
+        .get('http://localhost:3000/Phooto')
         .catch(err => assert.equal(err.message, 'Request failed with status code 404'));
     });
   });
@@ -74,17 +70,12 @@ describe('fileSystem', function () {
   describe('should open files', function () {
     it('should open file', function () {
       return request
-        .get('http://localhost:3000/Photo/Minsk2019/1.jpeg?type=f')
-        .then(res => assert.equal(res.data, ''));
-    });
-    it('should try to open with wrong flag', function () {
-      return request
-        .get('http://localhost:3000/Photo/Minsk2019/1.jpeg?type=d')
-        .catch(err => assert.equal(err.message, 'Request failed with status code 400'));
+        .get('http://localhost:3000/Photo/Minsk2019/1.jpeg')
+        .then(res => assert(res));
     });
     it('should try to open with wrong path', function () {
       return request
-        .get('http://localhost:3000/Photo/Minsk2019/1213.jpeg?type=d')
+        .get('http://localhost:3000/Photo/Minsk2019/1213.jpeg')
         .catch(err => assert.equal(err.message, 'Request failed with status code 404'));
     });
   });

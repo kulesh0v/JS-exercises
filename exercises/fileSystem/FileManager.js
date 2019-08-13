@@ -6,81 +6,52 @@ class FileManager {
     this.root = root;
   }
 
-  getPath(req) {
-    return `${this.root}/${req.params[0]}`
+  getPath(src) {
+    return `${this.root}/${src}`
   }
 
-  static createError(req, res, err) {
-    console.log(err);
-    if (err.code === 'ENOENT') {
-      return {status: 404, msg: 'This directory does not exist'};
-    }
-    if (err.errno === 'EEXIST') {
-      return {status: 400, msg: `${req.params[0]} already exist`};
-    }
-
-    return {status: 400, msg: `${req.params[0]} unexpected error`};
+  createFile(src) {
+    return fsp.open(this.getPath(src), 'w');
   }
 
-  async createFile(req, res) {
+  createDirectory(src) {
+    return fsp.mkdir(this.getPath(src));
+  }
+
+  openDirectory(src) {
+    return fsp.readdir(this.getPath(src));
+  }
+
+  openFile(src) {
+    return fsp.open(this.getPath(src));
+  }
+
+  async open(src) {
+    let result;
     try {
-      await fsp.open(this.getPath(req), 'w');
-      res.send(`File ${req.params[0]} created`);
-    } catch (err) {
-      const toSend = FileManager.createError(req, res, err);
-      res.status(toSend.status).send(toSend.msg);
+      result = await this.openDirectory(src);
+      return result;
+    } catch (e) {
+      if (e.code !== 'ENOTDIR') {
+        throw e;
+      }
     }
+
+    return this.openFile(src);
   }
 
-
-  async createDirectory(req, res) {
+  async create(src, type) {
     try {
-      await fsp.mkdir(this.getPath(req));
-      res.send(`Directory ${req.params[0]} created`);
-    }
-    catch (err) {
-      const toSend = FileManager.createError(req, res, err);
-      res.status(toSend.status).send(toSend.msg);
-    }
-  }
-
-  async openDirectory(req, res) {
-    try {
-      const data = await fsp.readdir(this.getPath(req));
-      res.send(data);
-    } catch (err) {
-      const toSend = FileManager.createError(req, res, err);
-      res.status(toSend.status).send(toSend.message);
-    }
-  }
-
-  async openFile(req, res) {
-    try {
-      await fsp.open(this.getPath(req));
-      res.sendFile(`/${this.getPath(req)}`, {root: __dirname})
-    } catch (err) {
-      res.send(`${req.params[0]} does not exist`);
-    }
-  }
-
-  open(req, res) {
-    if (req.params[0] === '') {
-      req.query.type = 'd';
-    }
-    if (req.query.type === 'd') {
-      this.openDirectory(req, res);
-    }
-    else {
-      this.openFile(req, res);
-    }
-  }
-
-  create(req, res) {
-    if (req.query.type === 'd') {
-      this.createDirectory(req, res);
-    }
-    else {
-      this.createFile(req, res);
+      if (type === 'd') {
+        await this.createDirectory(src);
+        return `Directory ${src} created`;
+      }
+      else {
+        await this.createFile(src);
+        return `File ${src} created`;
+      }
+    } catch (e) {
+      throw e;
     }
   }
 }
